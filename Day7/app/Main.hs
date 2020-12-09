@@ -19,6 +19,10 @@ main = do
     let overBags = getAllOverBags [personalBag] rulesTuples
     --print overBags
     print (Set.size overBags)
+    -- part 2
+    let dict = Map.fromList rulesTuples
+    let nBags = countNeededBags personalBag dict
+    print nBags
     hClose handle
 
 rplSubStr match replacement = unpack . replace (pack match) (pack replacement) . pack 
@@ -35,3 +39,6 @@ getAllOverBags :: [String] -> [(String, [(Int,String)])] -> Set.Set String
 getAllOverBags [] _ = Set.empty :: Set.Set String
 getAllOverBags (bagName:rest) rules = Set.union (Set.fromList hits) (getAllOverBags (rest ++ hits) rules)
     where hits = [overBag | (overBag, tuples) <- rules, bagName `elem` [bag | (_,bag) <- tuples ]]
+
+countNeededBags :: String -> Map.Map String [(Int,String)] -> Int
+countNeededBags bagName dict = sum [ fst tuple + countNeededBags (snd tuple) dict | tuple <- dict Map.! bagName]
