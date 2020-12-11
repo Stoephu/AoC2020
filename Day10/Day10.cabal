@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 87cd2c6d8d1dfc72ac3eb3ed0a4f02bc4e321bfd78d9b6e5dce056355c8eae69
+-- hash: d5abb271bdb7791a90246e928a63e4060d5da4815ef5b6b3b002a23028e5ce95
 
 name:           Day10
 version:        0.1.0.0
@@ -34,6 +34,9 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
 
 executable Day10-exe
@@ -46,6 +49,9 @@ executable Day10-exe
   build-depends:
       Day10
     , base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
 
 test-suite Day10-test
@@ -59,4 +65,7 @@ test-suite Day10-test
   build-depends:
       Day10
     , base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
