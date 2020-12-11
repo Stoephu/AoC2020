@@ -30,3 +30,9 @@ count1 (a:b:ls) = if (b-a) == 1 then 1 + (count1 (b:ls)) else count1 (b:ls)
 count3 :: [Int] -> Int
 count3 [a,b] = if (b-a) == 3 then 1 else 0
 count3 (a:b:ls) = if (b-a) == 3 then 1 + (count3 (b:ls)) else count3 (b:ls)
+
+getCombinations ls = 
+
+getNumberCompatibles x (l:ls)
+    | x >= l = 1+ getCompatibles (x:ls)
+    | otherwise = 0
