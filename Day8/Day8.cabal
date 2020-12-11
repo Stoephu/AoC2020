@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e0acbd09276b809a36efaacb49601c920489879140b6a2a5462e263b6f401213
+-- hash: 4d8f661eb3de9362b6dd074eee8741bebd169fd1c6df86a09f70764f942b2904
 
 name:           Day8
 version:        0.1.0.0
@@ -34,6 +34,9 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
 
 executable Day8-exe
@@ -46,6 +49,9 @@ executable Day8-exe
   build-depends:
       Day8
     , base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
 
 test-suite Day8-test
@@ -59,4 +65,7 @@ test-suite Day8-test
   build-depends:
       Day8
     , base >=4.7 && <5
+    , containers
+    , split
+    , text
   default-language: Haskell2010
