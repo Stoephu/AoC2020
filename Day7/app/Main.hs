@@ -15,13 +15,14 @@ main = do
     let rulesString = map (rplSubStr " bags contain " " " . rplSubStr " bag, " " " . rplSubStr " bags, " " " . rplSubStr " bags." "" . rplSubStr " bag." "") lines
     let rulesList = map (splitOn " ") rulesString
     let rulesTuples = makeTupleList rulesList
-    --print rulesTuples
+    print rulesTuples
     let overBags = getAllOverBags [personalBag] rulesTuples
     --print overBags
     print (Set.size overBags)
     -- part 2
     let dict = Map.fromList rulesTuples
-    let nBags = countNeededBags personalBag dict
+    print dict
+    let nBags = countNeededBags personalBag dict - 1
     print nBags
     hClose handle
 
@@ -30,6 +31,7 @@ rplSubStr match replacement = unpack . replace (pack match) (pack replacement) .
 makeTupleList = map getTuple 
 
 getTuple (a:b:rest) = (a ++ " " ++ b, getRest rest)
+
 getRest :: [String] -> [(Int,String)]
 getRest ["no","other"] = []
 getRest [] = []
@@ -41,4 +43,4 @@ getAllOverBags (bagName:rest) rules = Set.union (Set.fromList hits) (getAllOverB
     where hits = [overBag | (overBag, tuples) <- rules, bagName `elem` [bag | (_,bag) <- tuples ]]
 
 countNeededBags :: String -> Map.Map String [(Int,String)] -> Int
-countNeededBags bagName dict = sum [ fst tuple + countNeededBags (snd tuple) dict | tuple <- dict Map.! bagName]
+countNeededBags bagName dict = sum [ fst tuple * countNeededBags (snd tuple) dict | tuple <- dict Map.! bagName] + 1
