@@ -21,9 +21,9 @@ main = do
     print ones 
     print threes
     print (ones * threes)
-    let temp =  Map.fromList appNumbers (zip (repeat 0 (length appNumbers)) )
+    let temp =  Map.fromList  (zip appNumbers (repeat 0 ) )
     let dyn =  Map.insert (last appNumbers) 1 temp
-    print ( getCombinations appNumbers)
+    print ( getCombinations (reverse appNumbers) [] dyn)
     hClose handle
 
 count1 :: [Int] -> Int
@@ -35,5 +35,8 @@ count3 [a,b] = if (b-a) == 3 then 1 else 0
 count3 (a:b:ls) = if (b-a) == 3 then 1 + (count3 (b:ls)) else count3 (b:ls)
 
 getCombinations :: [Int] -> [Int]-> Map.Map Int Int -> Int
-getCombinations ls (s:stack) dyn = getCompatibles s ls
-    where addCombinations x:xs dyn = Map.insert x ((dyn Map.!? x)+1) dyn
+getCombinations [0] [] dyn = fromMaybe -1 $ dyn Map.!? 0
+getCombinations (a:rev) [] dyn = getCombinations rev (getCompatibles a rev) dyn
+getCombinations rev (s:stack) dyn = getCombinations rev stack $ Map.insert s (fromMaybe 0 $ dyn Map.!? s) +  (fromMaybe 0 $ dyn Map.!? a) dyn
+
+getCompatibles a (b:rev) = if b + 3 >= a then b: getCompatibles a rev else []
