@@ -35,8 +35,10 @@ count3 [a,b] = if (b-a) == 3 then 1 else 0
 count3 (a:b:ls) = if (b-a) == 3 then 1 + (count3 (b:ls)) else count3 (b:ls)
 
 getCombinations :: [Int] -> [Int]-> Map.Map Int Int -> Int
-getCombinations [0] [] dyn = fromMaybe -1 $ dyn Map.!? 0
-getCombinations (a:rev) [] dyn = getCombinations rev (getCompatibles a rev) dyn
-getCombinations rev (s:stack) dyn = getCombinations rev stack $ Map.insert s (fromMaybe 0 $ dyn Map.!? s) +  (fromMaybe 0 $ dyn Map.!? a) dyn
+getCombinations [0] [] dyn = fromMaybe (-1)  first
+    where first = dyn Map.!? 0
+getCombinations (a:rev) [] dyn = if length compatibles /= 0 then getCombinations (a:rev) compatibles dyn else getCombinations rev compatibles dyn
+    where compatibles = getCompatibles a rev
+getCombinations (a:rev) (s:stack) dyn = getCombinations (a:rev) stack $ Map.insert s ((fromMaybe 0 $ dyn Map.!? s) +  (fromMaybe 0 $ dyn Map.!? a)) dyn
 
 getCompatibles a (b:rev) = if b + 3 >= a then b: getCompatibles a rev else []
