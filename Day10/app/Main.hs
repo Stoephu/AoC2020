@@ -21,9 +21,10 @@ main = do
     print ones 
     print threes
     print (ones * threes)
-    let temp =  Map.fromList  (zip appNumbers (repeat 0 ) )
-    let dyn =  Map.insert (last appNumbers) 1 temp
-    print ( getCombinations (reverse appNumbers) [] dyn)
+    --- Part2
+    let compatibles = Map.fromList (makeTuples appNumbers)
+    let result = getCombinations compatibles (maximum numbers + 3) 0
+    print result
     hClose handle
 
 count1 :: [Int] -> Int
@@ -34,11 +35,21 @@ count3 :: [Int] -> Int
 count3 [a,b] = if (b-a) == 3 then 1 else 0
 count3 (a:b:ls) = if (b-a) == 3 then 1 + (count3 (b:ls)) else count3 (b:ls)
 
+getCombinations :: Map.Map Int [Int] -> Int -> Int -> Int
+getCombinations compatibles end start
+    | end == start = 1
+    | otherwise = length nextPlugs * sum ( map (getCombinations compatibles end) nextPlugs )
+        where nextPlugs = fromMaybe [] (compatibles Map.!? start)
+{-
 getCombinations :: [Int] -> [Int]-> Map.Map Int Int -> Int
 getCombinations [0] [] dyn = fromMaybe (-1)  first
     where first = dyn Map.!? 0
 getCombinations (a:rev) [] dyn = if length compatibles /= 0 then getCombinations (a:rev) compatibles dyn else getCombinations rev compatibles dyn
     where compatibles = getCompatibles a rev
 getCombinations (a:rev) (s:stack) dyn = getCombinations (a:rev) stack $ Map.insert s ((fromMaybe 0 $ dyn Map.!? s) +  (fromMaybe 0 $ dyn Map.!? a)) dyn
+-}
+makeTuples [] = []
+makeTuples (l:ls) = (l,getCompatibles l ls) : makeTuples ls
 
-getCompatibles a (b:rev) = if b + 3 >= a then b: getCompatibles a rev else []
+getCompatibles a (b:rev) = if b + 3 >= a then b : getCompatibles a rev else []
+getCompatibles _ [] = []
